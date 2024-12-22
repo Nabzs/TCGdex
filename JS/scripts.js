@@ -1,13 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Affiche le loader
     setTimeout(function () {
-        // Cacher le loader apres 9 sec
+        // Cacher le loader après 9 sec
         document.getElementById('loader').style.display = 'none';
         const content = document.getElementById('content');
         content.style.display = 'block';
         content.classList.add('fade-in');
-    }, 9000); // 9 secondes moyenne de chargement des cartes
+    }, 10000); // 9 secondes moyenne de chargement des cartes
 });
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const apiUrl = 'https://api.pokemontcg.io/v2/cards';
@@ -15,28 +16,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const typeFilter = document.getElementById('type-filter');
     const rarityFilter = document.getElementById('rarity-filter');
     const setFilter = document.getElementById('set-filter');
+    const searchInput = document.getElementById('search-input');  // Champ de recherche
 
     let allCards = [];
+    let isLoading = false;
 
-    // Fonction pour récupérer les cartes depuis l'API
+    // Fonction pour récupérer les cartes depuis l'API avec pagination
     async function fetchCards() {
         try {
-            const response = await fetch(`${apiUrl}?pageSize=512`);
-            const data = await response.json();
-            allCards = data.data;
-            displayCards(allCards);
+            let page = 1;
+            const pageSize = 100;  // Limité par l'API
+            while (allCards.length < 300) {
+                const response = await fetch(`${apiUrl}?pageSize=${pageSize}&page=${page}`);
+                const data = await response.json();
+                allCards = allCards.concat(data.data);
+                page++;
+            }
+
+            displayCards(allCards.slice(0, 300));  // Limiter à 300 cartes
+            populateSetsDropdown(allCards);  // Remplir le sélecteur de sets
         } catch (error) {
             console.error('Erreur de récupération des cartes:', error);
         }
     }
 
+    // Fonction pour afficher les cartes dans la page
     function displayCards(cards) {
         cardList.innerHTML = '';
-
         cards.forEach(card => {
             const cardElement = document.createElement('div');
             cardElement.classList.add('card');
-            cardElement.tabIndex = 0; // Rendre la carte accessible au clavier
+            cardElement.tabIndex = 0;  // Rendre la carte accessible au clavier
             cardElement.setAttribute('data-card-id', card.id);
 
             cardElement.innerHTML = `
@@ -44,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h3>${card.name}</h3>
             `;
 
-            // Ouvrir la pop-up en appuyant sur "Entrée" (accessibilitée)
+            // Ouvrir la pop-up en appuyant sur "Entrée" (accessibilité)
             cardElement.addEventListener('click', () => openPopup(card.id));
             cardElement.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
@@ -56,12 +66,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Fonction pour remplir le sélecteur de sets
+    function populateSetsDropdown(cards) {
+        const sets = [...new Set(cards.map(card => card.set.name))];  // Extraire les sets de l'api
+        sets.forEach(setName => {
+            const option = document.createElement('option');
+            option.value = setName;
+            option.textContent = setName;
+            setFilter.appendChild(option);
+        });
+    }
+
+    // Fonction pour effectuer la recherche de cartes par nom
+    function searchCards() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filteredCards = allCards.filter(card => card.name.toLowerCase().includes(searchTerm));
+        displayCards(filteredCards);
+    }
+
+    // Ajout de la recherche
+    searchInput.addEventListener('input', searchCards);
+
+    // Fonction pour ouvrir la pop-up avec les détails d'une carte
     function openPopup(cardId) {
         const card = allCards.find(card => card.id === cardId);
 
         // Créer l'élément de la pop-up
         const popup = document.createElement('div');
-        popup.tabIndex = 0; // Pop-up accessible au clavier
+        popup.tabIndex = 0;  // Pop-up accessible au clavier
         popup.classList.add('popup');
 
         // Récupérer les cartes ayant le même nom
@@ -136,16 +168,16 @@ document.addEventListener('DOMContentLoaded', () => {
         popup.remove();
     }
 
-    // Fonction pour filtrer les cartes
+    // Fonction pour filtrer les cartes selon les critères
     function filterCards() {
         const typeValue = typeFilter.value.toLowerCase();
         const rarityValue = rarityFilter.value.toLowerCase();
         const setValue = setFilter.value;
 
         const filteredCards = allCards.filter(card => {
-            const matchesType = typeValue ? card.types?.some(type => type.toLowerCase() === typeValue) : true;
-            const matchesRarity = rarityValue ? card.rarity?.toLowerCase() === rarityValue : true;
-            const matchesSet = setValue ? card.set.id === setValue : true;
+            const matchesType = typeValue ? card.types?.some(type => type.toLowerCase() === typeValue) : true; // Trier par type
+            const matchesRarity = rarityValue ? (card.rarity ? card.rarity.toLowerCase() === rarityValue : rarityValue === "unknown") : true;
+            const matchesSet = setValue ? card.set.name.toLowerCase() === setValue.toLowerCase() : true;  // Trier par set
             return matchesType && matchesRarity && matchesSet;
         });
 
