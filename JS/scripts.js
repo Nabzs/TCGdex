@@ -1,12 +1,12 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // Affiche le loader
-    setTimeout(function() {
-        // Cacher le loader
+    setTimeout(function () {
+        // Cacher le loader apres 9 sec
         document.getElementById('loader').style.display = 'none';
         const content = document.getElementById('content');
         content.style.display = 'block';
         content.classList.add('fade-in');
-    }, 9000);  // 9 secondes moyenne de chargement des cartes
+    }, 9000); // 9 secondes moyenne de chargement des cartes
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const typeFilter = document.getElementById('type-filter');
     const rarityFilter = document.getElementById('rarity-filter');
     const setFilter = document.getElementById('set-filter');
-    
+
     let allCards = [];
 
     // Fonction pour récupérer les cartes depuis l'API
@@ -30,37 +30,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Fonction pour afficher les cartes dans la page
     function displayCards(cards) {
-        cardList.innerHTML = ''; 
-        
+        cardList.innerHTML = '';
+
         cards.forEach(card => {
             const cardElement = document.createElement('div');
             cardElement.classList.add('card');
-            cardElement.tabIndex = 0; 
-            cardElement.setAttribute('data-card-id', card.id); 
-            
+            cardElement.tabIndex = 0; // Rendre la carte accessible au clavier
+            cardElement.setAttribute('data-card-id', card.id);
+
             cardElement.innerHTML = `
                 <img src="${card.images.small}" alt="${card.name}">
                 <h3>${card.name}</h3>
             `;
-            
-            // Ajouter d'un event de clic pour ouvrir la popup
-            cardElement.addEventListener('click', () => openPopup(card.id)); 
+
+            // Ouvrir la pop-up en appuyant sur "Entrée" (accessibilitée)
+            cardElement.addEventListener('click', () => openPopup(card.id));
+            cardElement.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    openPopup(card.id);
+                }
+            });
+
             cardList.appendChild(cardElement);
         });
     }
 
-    // Ouvrir la pop-up avec les détails de la carte
     function openPopup(cardId) {
         const card = allCards.find(card => card.id === cardId);
-        
-        // Créer l'élément popup
+
+        // Créer l'élément de la pop-up
         const popup = document.createElement('div');
-        popup.tabIndex = 0; // Permettre de naviguer au clavier sur chaques cartes    
+        popup.tabIndex = 0; // Pop-up accessible au clavier
         popup.classList.add('popup');
-        
-        // Récupérer les cartes du même Pokémon (ayant le même nom)
+
+        // Récupérer les cartes ayant le même nom
         const relatedCards = allCards.filter(c => c.name === card.name && c.id !== card.id);
 
         const typesImagesPopup = card.types ? card.types.map(type => {
@@ -73,10 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return `<img src="${energyImage}" alt="${energy}" class="popup-energy-img">`;
         }).join('') : 'Aucune énergie';
 
-        // Contenu
         const popupContent = document.createElement('div');
         popupContent.classList.add('popup-content');
-        
+
         popupContent.innerHTML = `
             <div class="popup-top">
                 <div class="popup-image">
@@ -109,53 +112,31 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <button class="close-popup">X</button>
         `;
-        
+
         const closePopupButton = popupContent.querySelector('.close-popup');
         closePopupButton.addEventListener('click', () => closePopup(popup));
-        
-        popup.appendChild(popupContent);
 
-        document.body.appendChild(popup); 
-        popup.style.display = 'flex';
-
-        // Gérer la navigation clavier
-        handleKeyboardNavigation(popup);
-    }
-
-    // Gére la navigation au clavier dans la popup
-    function handleKeyboardNavigation(popup) {
-        const focusableElements = popup.querySelectorAll('button, .attack-item, .popup-types img, .popup-content');
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        // Permettre à l'utilisateur de naviguer avec Tab et Shift+Tab
-        firstElement.focus();
-
+        // Fermer la pop-up avec "Entrée" ou "Échap"
         popup.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') {
-                if (e.shiftKey) {
-                    if (document.activeElement === firstElement) {
-                        lastElement.focus(); // Si Shift+Tab est utilisé sur le premier élément, aller au dernier
-                        e.preventDefault();
-                    }
-                } else {
-                    if (document.activeElement === lastElement) {
-                        firstElement.focus(); // Si Tab est utilisé sur le dernier élément, revenir au premier
-                        e.preventDefault();
-                    }
-                }
-            } else if (e.key === 'Escape') {
-                closePopup(popup); // Fermer la popup avec Esc
+            if (e.key === 'Enter' || e.key === 'Escape') {
+                closePopup(popup);
             }
         });
+
+        popup.appendChild(popupContent);
+        document.body.appendChild(popup);
+        popup.style.display = 'flex';
+
+        // Placer le focus sur la pop-up pour la navigation clavier
+        popup.focus();
     }
 
-    // Fonction pour fermer la popup
+    // Fermer la pop-up
     function closePopup(popup) {
         popup.remove();
     }
 
-    // Fonction pour filtrer les cartes selon les filtres
+    // Fonction pour filtrer les cartes
     function filterCards() {
         const typeValue = typeFilter.value.toLowerCase();
         const rarityValue = rarityFilter.value.toLowerCase();
@@ -175,5 +156,5 @@ document.addEventListener('DOMContentLoaded', () => {
     rarityFilter.addEventListener('change', filterCards);
     setFilter.addEventListener('change', filterCards);
 
-    fetchCards(); 
+    fetchCards();
 });
