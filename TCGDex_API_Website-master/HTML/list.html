@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokémon TCG Dex</title>
+    <link rel="stylesheet" href="../CSS/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div id="logo">
+        <a href="../index.html"><img src="../images/nav.svg" alt="Pikachu"></a>
+      </div>
+
+      <ul>
+        <li><a href="./list.html">Collection</a></li>
+        <li><a href="./compare.html">Règles</a></li>
+        <li><a href="../index.html">Page principale</a></li>
+      </ul>
+    </header>
+
+    <div id="loader" class="loader">
+      <div class="pokemon"></div>
+  </div>
+    <main>
+      <h1>Pokémon TCG Dex</h1>
+
+      <div class="container">
+        <div class="select">
+          <select id="type-filter">
+            <option value="">Tous les types</option>
+            <option value="Fire">Feu</option>
+            <option value="Water">Eau</option>
+            <option value="Lightning">Electrique</option>
+            <option value="Grass">Plante</option>
+            <option value="Psychic">Psychic</option>
+            <option value="Fighting">Combattant</option>
+            <option value="Darkness">Dark</option>
+            <option value="Metal">Métal</option>
+            <option value="Fairy">Fée</option>
+            <option value="Colorless">Colorless</option>
+            <option value="Dragon">Dragon</option>
+          </select>
+        </div>
+        <div class="down_note"></div>
+      </div>
+
+      <select id="set-filter">
+        <option value="">All Sets</option>
+      </select>
+
+      <select id="rarity-filter">
+        <option value="">Toutes les raretés</option>
+        <option value="Common">Commun</option>
+        <option value="Uncommon">Peu commun</option>
+        <option value="Rare">Rare</option>
+        <option value="Rare Holo">Rare Holo</option>
+        <option value="Rare Holo EX">Rare Holo EX</option>
+        <option value="Rare Holo GX">Rare Holo GX</option>
+        <option value="Rare Holo V">Rare Holo V</option>
+        <option value="Secret Rare">Secret Rare</option>
+      </select>
+
+      <div id="card-list" class="card-list"></div>
+    </main>
+
+    <script src="../JS/scripts.js"></script>
+  </body>
+</html>
