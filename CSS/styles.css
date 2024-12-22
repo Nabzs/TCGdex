@@ -70,19 +70,30 @@ select:focus, #search-input:focus {
   height: auto;
 }
 
-ul {
+main {
+  margin-left: 3dvw;
+  margin-right: 3dvw;
+  margin-top: 40px;
+  margin-bottom: 120px;
+}
+
+a {
+  color: orange;
+}
+
+header ul {
   display: flex;
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-ul li {
+header ul li {
   margin-right: 30px;
   text-decoration: underline;
 }
 
-ul li a {
+header ul li a {
   text-decoration: none;
   color: #fefefe;
   font-size: 1.1em;
