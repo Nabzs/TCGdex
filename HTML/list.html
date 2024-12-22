@@ -9,7 +9,9 @@
   <body>
     <header>
       <div id="logo">
-        <a href="../index.html"><img src="../images/nav.svg" alt="Pikachu"></a>
+        <a href="../index.html"
+          ><img src="../images/nav.svg" alt="Pikachu"
+        /></a>
       </div>
 
       <ul>
@@ -21,50 +23,52 @@
 
     <div id="loader" class="loader">
       <div class="pokemon"></div>
-  </div>
+    </div>
     <main>
       <h1>Pokémon TCG Dex</h1>
+      <input type="text" id="search-input" placeholder="Rechercher un Pokémon"/>
 
+      <div class="filter-container">
+        <div class="filter-group">
+          <select id="type-filter">
+            <option value="">Tous les types</option>
+            <option value="Fire">Feu</option>
+            <option value="Water">Eau</option>
+            <option value="Lightning">Electrique</option>
+            <option value="Grass">Plante</option>
+            <option value="Psychic">Psychic</option>
+            <option value="Fighting">Combattant</option>
+            <option value="Darkness">Dark</option>
+            <option value="Metal">Métal</option>
+            <option value="Fairy">Fée</option>
+            <option value="Colorless">Colorless</option>
+            <option value="Dragon">Dragon</option>
+          </select>
 
-      <input type="text" id="search-input" placeholder="Rechercher un Pokémon" />
+          <select id="set-filter">
+            <option value="">All Sets</option>
+          </select>
 
-<div class="filter-container">
-  <div class="filter-group">
-    <select id="type-filter">
-      <option value="">Tous les types</option>
-      <option value="Fire">Feu</option>
-      <option value="Water">Eau</option>
-      <option value="Lightning">Electrique</option>
-      <option value="Grass">Plante</option>
-      <option value="Psychic">Psychic</option>
-      <option value="Fighting">Combattant</option>
-      <option value="Darkness">Dark</option>
-      <option value="Metal">Métal</option>
-      <option value="Fairy">Fée</option>
-      <option value="Colorless">Colorless</option>
-      <option value="Dragon">Dragon</option>
-    </select>
-    <select id="set-filter">
-      <option value="">All Sets</option>
-    </select>
-    <select id="rarity-filter">
-      <option value="">Toutes les raretés</option>
-      <option value="unknown">Inconnue</option>
-      <option value="Common">Commun</option>
-      <option value="Uncommon">Peu commun</option>
-      <option value="Rare">Rare</option>
-      <option value="Rare Holo">Rare Holo</option>
-      <option value="Rare Holo EX">Rare Holo EX</option>
-      <option value="Rare Holo GX">Rare Holo GX</option>
-      <option value="Rare Holo V">Rare Holo V</option>
-    </select>
-  </div>
-</div>
+          <select id="rarity-filter">
+            <option value="">Toutes les raretés</option>
+            <option value="unknown">Inconnue</option>
+            <option value="Common">Commun</option>
+            <option value="Uncommon">Peu commun</option>
+            <option value="Rare">Rare</option>
+            <option value="Rare Holo">Rare Holo</option>
+            <option value="Rare Holo EX">Rare Holo EX</option>
+            <option value="Rare Holo GX">Rare Holo GX</option>
+            <option value="Rare Holo V">Rare Holo V</option>
+          </select>
 
+        </div>
+      </div>
 
       <div id="card-list" class="card-list"></div>
+
     </main>
 
     <script src="../JS/scripts.js"></script>
   </body>
 </html>
+  

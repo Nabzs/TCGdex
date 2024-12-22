@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             displayCards(allCards.slice(0, 300));  // Limiter à 300 cartes
-            populateSetsDropdown(allCards);  // Remplir le sélecteur de sets
+            populateSetsDropdown(allCards);  
         } catch (error) {
             console.error('Erreur de récupération des cartes:', error);
         }
