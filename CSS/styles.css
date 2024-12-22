@@ -70,6 +70,28 @@ select:focus, #search-input:focus {
   height: auto;
 }
 
+#pokemon_tcg {
+  display: flex;
+  justify-content: center;
+ 
+}
+
+#pokemon_tcg img {  
+  max-width: 300px;
+}
+
+#tapis_jeu img {  
+  margin-top: 20px;
+  margin-bottom: 10px;
+  max-width: 800px;
+}
+
+#carte_exemple img {  
+  margin-top: 20px;
+  margin-bottom: 10px;
+  max-width: 500px;
+}
+
 main {
   margin-left: 3dvw;
   margin-right: 3dvw;
@@ -106,7 +128,8 @@ h1 {
   text-align: center;
   font-size: 4rem;
   margin: 50px;
-  background: linear-gradient(to right, #ff0000, #af2c0c, #0099ff, #ff66cc); 
+  /*background: linear-gradient(to right, #ff0000, #af2c0c, #0099ff, #ff66cc);*/
+  background: linear-gradient(to right, rgb(254,71,103), rgb(254,71,103), rgb(254,71,103), rgb(248,210,110), rgb(248,210,110), rgb(248,210,110));
   -webkit-background-clip: text;
   color: transparent; 
 }
@@ -116,6 +139,16 @@ h2,
 h3 {
   margin: 0;
   color: #ffffff;
+}
+
+.textes_presentation h2{
+  margin-top: 60px;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.textes_presentation p{
+  font-size: 1.2rem;
 }
 
 .card-list {
